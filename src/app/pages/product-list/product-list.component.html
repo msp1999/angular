@@ -1,0 +1,172 @@
+<div class="card">
+  <div class="card-row" style="text-align: right; margin-right: 10px;">
+    <button type="button" class="btn">Filter</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productDialog">Add Product</button>
+  </div>
+  <table class="table table-hover">
+    <thead>
+      <th>ID</th>
+      <th>Product Name</th>
+      <th>Description</th>
+      <th>Category</th>
+      <th>Rating</th>
+      <th>Units</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of list;index as i">
+        <td>{{i+1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.description}}</td>
+        <td>{{item.category}}</td>
+        <td>{{item.rating}}</td>
+        <td>{{item.stock}}</td>
+        <td>{{item.price}}</td>
+        <td>
+          <button  class="btn btn-primary mr-1" (click)="updateProduct(item)" data-toggle="modal" data-target="#productDialogUpdate">Update</button>
+          <button  class="btn btn-danger" (click)="removeProduct(item.id)"><i class="nc-icon nc-simple-remove"></i></button>
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="productDialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Add Product</div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-container">
+          <form #myForm="ngForm" (ngSubmit)="AddProduct(myForm)">
+            <input type="hidden" class="form-control" #id (ngModel)="id">
+            <div class="form-row">
+              <div class="col form-group">
+                <label>Product Name</label>
+                <input type="text" class="form-control" name="name" #productName placeholder="Enter Name" (ngModel)="productName">
+              </div>
+              <div class=" col form-row">
+                <div class="col form-group">
+                  <label>Units</label>
+                  <input type="number" class="form-control" name="stock" #stock  placeholder="Enter Units" (ngModel)="stock">
+                </div>
+                <div class="col form-group">
+                  <label>Price (Rs.)</label>
+                  <input type="number" class="form-control" name="price" #price placeholder="Enter Price" (ngModel)="price">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="col form-group">
+                <label>Select Product Image</label>
+                <div class="custom-file">
+                  <input type="file" name="imageURL" (ngModel)="imageURL" class="custom-file-input" #imageURL required>
+                  <label class="custom-file-label" for="validatedCustomFile" accept="images/*">Choose file...</label>
+                </div>
+              </div>
+              <div class="col form-group">
+                <label>Categories</label>
+                <select class="custom-select" name="category" (ngModel)="categoryOptions">
+                  <option selected disabled value="">None</option>
+                  <option *ngFor="let option of categoryOptions"  value="{{option.value}}" >{{option.value}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col form-group">
+                <label>Product Description</label>
+                <input type="text" class="form-control" name="description" #description placeholder=" Description"  (ngModel)="description">
+              </div>
+              <div class="form-group col">
+                <label>Ratings</label>
+                <input type="number" class="form-control" name="ratings" #rating placeholder="Enter Rating" (ngModel)="rating">
+              </div>
+            </div>
+            <div class="form-row" style="margin: auto; display: block; text-align: right;">
+              <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#productDialog">Submit</button>
+              <button type="reset" class="btn btn-danger">Reset Form</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" id="productDialogUpdate" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">Update Product</div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-container">
+          <form #myForm="ngForm" [formGroup]="productService.product_form" (ngSubmit)="UpdateProduct()" >
+            <input type="hidden" class="form-control" formControlName="id" #id>
+            <div class="form-row">
+              <div class="col form-group">
+                <label>Product Name</label>
+                <input type="text" class="form-control" formControlName="name" #productName placeholder="Enter Name">
+              </div>
+              <div class=" col form-row">
+                <div class="col form-group">
+                  <label>Units</label>
+                  <input type="number" class="form-control" formControlName="stock" #stock  placeholder="Enter Units">
+                </div>
+                <div class="col form-group">
+                  <label>Price (Rs.)</label>
+                  <input type="number" class="form-control" formControlName="price" #price placeholder="Enter Price">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="col form-group">
+                <label>Select Product Image</label>
+                <div class="custom-file">
+                  <input type="file" formControlName="image" class="custom-file-input" #imageURL required>
+                  <label class="custom-file-label" for="validatedCustomFile" accept="images/*">Choose file...</label>
+                </div>
+              </div>
+              <div class="col form-group">
+                <label>Categories</label>
+                <select class="custom-select" formControlName="category">
+                  <option selected disabled>None</option>
+                  <option *ngFor="let option of categoryOptions"  value="{{option.value}}" >{{option.value}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col form-group">
+                <label>Product Description</label>
+                <input type="text" class="form-control" formControlName="description" #description placeholder="Description" >
+              </div>
+              <div class="form-group col">
+                <label>Ratings</label>
+                <input type="number" class="form-control" formControlName="rating" #rating placeholder="Enter Rating">
+              </div>
+            </div>
+            <div class="form-row" style="margin: auto; display: block; text-align: right;">
+              <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#productDialogUpdate">Submit</button>
+              <button type="reset" class="btn btn-danger">Reset Form</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

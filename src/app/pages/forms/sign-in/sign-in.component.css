@@ -1,0 +1,35 @@
+
+.container-fluid{
+
+  padding-top: 15rem;
+  background-color:rgb(255, 199, 78);
+}
+
+.padd{
+  /* margin-bottom: -80px; */
+  margin-left: auto;
+  margin-right: auto;
+
+}
+.card{
+  box-shadow:5px 5px 10px rgb(94, 94, 94);
+  /* background-color: rgb(209, 246, 255) ; */
+  border:2px black;
+  width: 30rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: -10rem;
+
+}
+
+.sh{
+  box-shadow:2px 2px 5px rgb(173, 173, 173);
+}
+
+.txt {
+  color: black;
+  font-size: medium;
+}
+:hover.form-control{
+  border-color: rgb(122, 191, 255)
+}
